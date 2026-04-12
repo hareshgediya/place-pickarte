@@ -8,6 +8,7 @@ export 'package:google_maps_flutter/google_maps_flutter.dart'
 export 'package:place_pickarte/src/models/google_map_config.dart';
 
 export 'src/helpers/google_map_styles.dart';
+export 'src/helpers/select_best_result.dart';
 export 'src/services/google/geocoding.dart' show GeocodingResult;
 export 'src/services/google/places.dart' show Prediction, PlaceDetails;
 export 'src/services/google/core.dart' show Component;

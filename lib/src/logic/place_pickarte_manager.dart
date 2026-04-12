@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:place_pickarte/src/helpers/extensions.dart';
+import 'package:place_pickarte/src/helpers/select_best_result.dart';
 import 'package:place_pickarte/src/services/google/places.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:place_pickarte/place_pickarte.dart';
@@ -124,7 +125,9 @@ GoogleMapsGeocoding while initalizing your PlacePickarteController.'''
     if (result.errorMessage != null && result.errorMessage!.isNotEmpty) {
       '📛 ${result.errorMessage!}'.logiosa();
     } else {
-      _updateCurrentLocation(result.results.first);
+      _updateCurrentLocation(
+        selectBestResult(result.results) ?? result.results.first,
+      );
     }
   }
 
