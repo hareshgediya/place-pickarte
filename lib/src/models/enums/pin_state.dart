@@ -1,4 +1,1 @@
-enum PinState {
-  idle,
-  dragging,
-}
+enum PinState { idle, dragging }

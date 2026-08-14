@@ -69,9 +69,9 @@ String? _junkReason(GeocodingResult result) {
 
   final lower = address.toLowerCase();
   final match = _unnamedPatterns.cast<String?>().firstWhere(
-        (p) => lower.contains(p!),
-        orElse: () => null,
-      );
+    (p) => lower.contains(p!),
+    orElse: () => null,
+  );
   if (match != null) return 'unnamed road ($match)';
 
   return null;

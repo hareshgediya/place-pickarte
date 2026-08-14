@@ -2,20 +2,13 @@ import 'package:place_pickarte/place_pickarte.dart';
 import 'package:flutter/material.dart';
 import 'package:place_pickarte/src/widgets/default_pin_widget.dart';
 
-typedef PinBuilder = Widget Function(
-  BuildContext context,
-  PinState state,
-);
+typedef PinBuilder = Widget Function(BuildContext context, PinState state);
 
 class PlacePickartePin extends StatefulWidget {
   final PinBuilder? pinBuilder;
   final Stream<PinState> pinStateStream;
 
-  const PlacePickartePin({
-    this.pinBuilder,
-    required this.pinStateStream,
-    super.key,
-  });
+  const PlacePickartePin({this.pinBuilder, required this.pinStateStream, super.key});
 
   @override
   State<PlacePickartePin> createState() => _PlacePickartePinState();
@@ -48,11 +41,7 @@ class _PlacePickartePinState extends State<PlacePickartePin> {
       child: IgnorePointer(
         child: AnimatedContainer(
           duration: kThemeAnimationDuration,
-          transform: Matrix4.translationValues(
-            0.0,
-            -_y,
-            0.0,
-          ),
+          transform: Matrix4.translationValues(0.0, -_y, 0.0),
           child: SizedBox(
             key: _pinKey,
             child: StreamBuilder<PinState>(

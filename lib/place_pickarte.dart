@@ -3,8 +3,7 @@ library place_pickarte;
 export 'package:place_pickarte/src/models/enums/my_location_result.dart';
 export 'package:place_pickarte/src/services/google/core.dart';
 export 'package:place_pickarte/src/services/google/geocoding.dart';
-export 'package:google_maps_flutter/google_maps_flutter.dart'
-    show CameraPosition, MapType;
+export 'package:google_maps_flutter/google_maps_flutter.dart' show CameraPosition, MapType;
 export 'package:place_pickarte/src/models/google_map_config.dart';
 
 export 'src/helpers/google_map_styles.dart';
@@ -17,4 +16,5 @@ export 'src/models/places_autocomplete_config.dart';
 export 'src/logic/place_pickarte_controller.dart';
 export 'src/widgets/place_pickarte_map.dart';
 export 'src/models/enums/pin_state.dart';
+
 // TODO: add session token

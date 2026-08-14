@@ -2,10 +2,7 @@ import 'package:place_pickarte/place_pickarte.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:place_pickarte/src/widgets/place_pickarte_pin.dart';
 
-final _initialDefaultLocationLatLng = Location(
-  lat: 40.4093,
-  lng: 49.8671,
-);
+final _initialDefaultLocationLatLng = Location(lat: 40.4093, lng: 49.8671);
 const _initialCameraZoom = 16.5;
 
 class PlacePickarteConfig {
@@ -26,18 +23,11 @@ class PlacePickarteConfig {
   }) {
     initialLocation ??= _initialDefaultLocationLatLng;
 
-    final target = LatLng(
-      initialLocation.lat,
-      initialLocation.lng,
-    );
+    final target = LatLng(initialLocation.lat, initialLocation.lng);
 
-    _initialGoogleMapCameraPosition = CameraPosition(
-      target: target,
-      zoom: initialZoom,
-    );
+    _initialGoogleMapCameraPosition = CameraPosition(target: target, zoom: initialZoom);
   }
 
   late final CameraPosition _initialGoogleMapCameraPosition;
-  CameraPosition get initialGoogleMapCameraPosition =>
-      _initialGoogleMapCameraPosition;
+  CameraPosition get initialGoogleMapCameraPosition => _initialGoogleMapCameraPosition;
 }

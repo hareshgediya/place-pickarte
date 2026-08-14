@@ -16,6 +16,9 @@ class GoogleMapConfig {
 
   final String? iosApiKey;
 
+  /// Browser / Maps JavaScript API key (HTTP referrer restricted).
+  final String? webApiKey;
+
   /// True if the map view should show zoom controls. This includes two buttons
   /// to zoom in and zoom out. The default value is to show zoom controls.
   ///
@@ -27,6 +30,7 @@ class GoogleMapConfig {
     this.googleMapType = MapType.normal,
     this.androidApiKey,
     this.iosApiKey,
+    this.webApiKey,
     this.zoomControlsEnabled = false,
   });
 }

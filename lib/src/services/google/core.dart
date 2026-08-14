@@ -7,10 +7,7 @@ class Location {
   final double lat;
   final double lng;
 
-  Location({
-    required this.lat,
-    required this.lng,
-  });
+  Location({required this.lat, required this.lng});
 
   factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
   Map<String, dynamic> toJson() => _$LocationToJson(this);
@@ -30,12 +27,7 @@ class Geometry {
 
   final Bounds? bounds;
 
-  Geometry({
-    required this.location,
-    this.locationType,
-    this.viewport,
-    this.bounds,
-  });
+  Geometry({required this.location, this.locationType, this.viewport, this.bounds});
 
   factory Geometry.fromJson(Map<String, dynamic> json) => _$GeometryFromJson(json);
   Map<String, dynamic> toJson() => _$GeometryToJson(this);
@@ -46,10 +38,7 @@ class Bounds {
   final Location northeast;
   final Location southwest;
 
-  Bounds({
-    required this.northeast,
-    required this.southwest,
-  });
+  Bounds({required this.northeast, required this.southwest});
 
   @override
   String toString() => '${northeast.lat},${northeast.lng}|${southwest.lat},${southwest.lng}';
@@ -91,20 +80,14 @@ abstract class GoogleResponseList<T> extends GoogleResponseStatus {
   final List<T> results;
 
   GoogleResponseList(String status, String? errorMessage, this.results)
-      : super(
-          status: status,
-          errorMessage: errorMessage,
-        );
+    : super(status: status, errorMessage: errorMessage);
 }
 
 abstract class GoogleResponse<T> extends GoogleResponseStatus {
   final T result;
 
   GoogleResponse(String status, String? errorMessage, this.result)
-      : super(
-          status: status,
-          errorMessage: errorMessage,
-        );
+    : super(status: status, errorMessage: errorMessage);
 }
 
 @JsonSerializable()
@@ -114,11 +97,7 @@ class AddressComponent {
   final String longName;
   final String shortName;
 
-  AddressComponent({
-    required this.types,
-    required this.longName,
-    required this.shortName,
-  });
+  AddressComponent({required this.types, required this.longName, required this.shortName});
 
   static const locality = 'locality';
   static const country = 'country';

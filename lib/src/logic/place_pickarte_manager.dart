@@ -1,23 +1,22 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:place_pickarte/src/helpers/extensions.dart';
-import 'package:place_pickarte/src/helpers/select_best_result.dart';
-import 'package:place_pickarte/src/services/google/places.dart';
+import 'package:place_pickarte/src/services/google/platform_places_client.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:place_pickarte/place_pickarte.dart';
 
 class PlacePickarteManager {
   late final PlacePickarteConfig config;
-  late final GoogleMapsPlaces _googleMapsPlaces;
+  late final PlatformPlacesClient _placesClient;
   late final StreamSubscription _pinStateSubscription;
   late final StreamSubscription _searchQuerySubscription;
 
-  PlacePickarteManager({
-    required this.config,
-  }) {
-    _googleMapsPlaces = GoogleMapsPlaces(
-      apiKey: config.googleMapConfig.iosApiKey,
-      apiHeaders: config.googleMapsGeocoding?.apiHeaders,
+  PlacePickarteManager({required this.config}) {
+    _placesClient = PlatformPlacesClient(
+      apiKey: _resolveApiKey(config),
+      apiHeaders: kIsWeb ? null : config.googleMapsGeocoding?.apiHeaders,
+      geocoding: config.googleMapsGeocoding,
     );
 
     _pinStateSubscription = _pinState.stream.listen((PinState event) {
@@ -27,10 +26,7 @@ class PlacePickarteManager {
       /// Search only when the user released the control of the map.
       if (_pinState.value == PinState.idle) {
         _searchByLocation(
-          Location(
-            lat: cameraPosition!.target.latitude,
-            lng: cameraPosition!.target.longitude,
-          ),
+          Location(lat: cameraPosition!.target.latitude, lng: cameraPosition!.target.longitude),
         );
       }
     });
@@ -38,12 +34,26 @@ class PlacePickarteManager {
     // TODO: searchs when controller created.
     _searchQuerySubscription = _searchQuery
         .distinct()
-        .debounceTime(
-          const Duration(milliseconds: 500),
-        )
+        .debounceTime(const Duration(milliseconds: 500))
         .listen((String event) {
-      _searchAutocomplete(event);
-    });
+          _searchAutocomplete(event);
+        });
+  }
+
+  static String _resolveApiKey(PlacePickarteConfig config) {
+    if (kIsWeb) {
+      return config.googleMapConfig.webApiKey ??
+          config.googleMapsGeocoding?.apiKey ??
+          config.googleMapConfig.iosApiKey ??
+          config.googleMapConfig.androidApiKey ??
+          '';
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return config.googleMapConfig.androidApiKey ?? config.googleMapsGeocoding?.apiKey ?? '';
+    }
+
+    return config.googleMapConfig.iosApiKey ?? config.googleMapsGeocoding?.apiKey ?? '';
   }
 
   final _pinState = BehaviorSubject<PinState>.seeded(PinState.idle);
@@ -85,7 +95,7 @@ class PlacePickarteManager {
 
   Future<void> _searchAutocomplete(String query) async {
     _updateAutocompleteResults(null);
-    final result = await _googleMapsPlaces.autocomplete(
+    final result = await _placesClient.autocomplete(
       query,
       sessionToken: config.placesAutocompleteConfig?.sessionToken,
       offset: config.placesAutocompleteConfig?.offset,
@@ -107,7 +117,7 @@ class PlacePickarteManager {
   }
 
   Future<void> _searchByLocation(Location location) async {
-    if (config.googleMapsGeocoding == null) {
+    if (!kIsWeb && config.googleMapsGeocoding == null) {
       '''GoogleMapsGeocoding is not initialized.
 
 Before using search by location functionality, please, initialize 
@@ -118,21 +128,17 @@ GoogleMapsGeocoding while initalizing your PlacePickarteController.'''
     }
 
     _updateCurrentLocation(null);
-    final result = await config.googleMapsGeocoding!.searchByLocation(location);
+    final result = await _placesClient.searchByLocation(location);
 
     if (result.errorMessage != null && result.errorMessage!.isNotEmpty) {
       '📛 ${result.errorMessage!}'.logiosa();
-    } else {
-      _updateCurrentLocation(
-        selectBestResult(result.results) ?? result.results.first,
-      );
+    } else if (result.results.isNotEmpty) {
+      _updateCurrentLocation(selectBestResult(result.results) ?? result.results.first);
     }
   }
 
-  Future<PlaceDetails> getPlaceDetails(String placeId) async {
-    // use PlacesDetailsResponse with its error handling
-    final detailsResponse = await _googleMapsPlaces.getDetailsByPlaceId(placeId);
-    return detailsResponse.result;
+  Future<PlaceDetails> getPlaceDetails(String placeId) {
+    return _placesClient.getDetailsByPlaceId(placeId);
   }
 
   void changeGoogleMapType(MapType mapType) {

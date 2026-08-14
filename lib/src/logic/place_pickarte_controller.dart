@@ -13,18 +13,13 @@ class PlacePickarteController {
   late final GoogleMapController? _googleMapController;
   final PlacePickarteConfig config;
 
-  PlacePickarteController({
-    required this.config,
-  }) {
+  PlacePickarteController({required this.config}) {
     _manager = PlacePickarteManager(config: config);
   }
 
-  Stream<CameraPosition?> get cameraPositionStream =>
-      _manager.cameraPositionStream;
-  Stream<GeocodingResult?> get currentLocationStream =>
-      _manager.currentLocationStream;
-  Stream<List<Prediction>?> get autocompleteResultsStream =>
-      _manager.autocompleteResultsStream;
+  Stream<CameraPosition?> get cameraPositionStream => _manager.cameraPositionStream;
+  Stream<GeocodingResult?> get currentLocationStream => _manager.currentLocationStream;
+  Stream<List<Prediction>?> get autocompleteResultsStream => _manager.autocompleteResultsStream;
   Stream<PinState> get pinStateStream => _manager.pinStateStream;
   Stream<MapType> get googleMapTypeStream => _manager.googleMapTypeStream;
   Stream<String> get searchQueryStream => _manager.searchQueryStream;
@@ -77,16 +72,11 @@ class PlacePickarteController {
       }
     }
 
-    final position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: accuracy,
-    );
+    final position = await Geolocator.getCurrentPosition(desiredAccuracy: accuracy);
 
     final cameraUpdate = CameraUpdate.newCameraPosition(
       CameraPosition(
-        target: LatLng(
-          position.latitude,
-          position.longitude,
-        ),
+        target: LatLng(position.latitude, position.longitude),
         zoom: zoom,
         tilt: tilt,
         bearing: bearing,
@@ -106,9 +96,7 @@ class PlacePickarteController {
     if (config.googleMapConfig.googleMapStyle != null) {
       'setting custom map style..'.logiosa();
 
-      _googleMapController!.setMapStyle(
-        config.googleMapConfig.googleMapStyle,
-      );
+      _googleMapController!.setMapStyle(config.googleMapConfig.googleMapStyle);
     }
 
     if (config.myLocationAsInitial) {
@@ -132,10 +120,7 @@ class PlacePickarteController {
     return _googleMapController!.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(
-            placeDetails.geometry!.location.lat,
-            placeDetails.geometry!.location.lng,
-          ),
+          target: LatLng(placeDetails.geometry!.location.lat, placeDetails.geometry!.location.lng),
           bearing: bearing,
           tilt: tilt,
           zoom: zoom,

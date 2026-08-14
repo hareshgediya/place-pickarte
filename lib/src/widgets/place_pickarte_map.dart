@@ -6,10 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class PlacePickarteMap extends StatelessWidget {
   final PlacePickarteController controller;
 
-  const PlacePickarteMap(
-    this.controller, {
-    super.key,
-  });
+  const PlacePickarteMap(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +19,12 @@ class PlacePickarteMap extends StatelessWidget {
             final googleMapType = snapshot.requireData;
 
             return GoogleMap(
-              zoomControlsEnabled:
-                  controller.config.googleMapConfig.zoomControlsEnabled,
+              zoomControlsEnabled: controller.config.googleMapConfig.zoomControlsEnabled,
               myLocationButtonEnabled: false,
               myLocationEnabled: true,
               mapType: googleMapType,
               onMapCreated: controller.onGoogleMapCreated,
-              initialCameraPosition:
-                  controller.config.initialGoogleMapCameraPosition,
+              initialCameraPosition: controller.config.initialGoogleMapCameraPosition,
               onCameraIdle: controller.onCameraIdle,
               onCameraMove: controller.onCameraMove,
               onCameraMoveStarted: controller.onCameraMoveStarted,

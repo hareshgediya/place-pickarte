@@ -21,12 +21,12 @@ class GoogleMapsPlaces extends GoogleWebService {
     Client? httpClient,
     Map<String, String>? apiHeaders,
   }) : super(
-          apiKey: apiKey,
-          baseUrl: baseUrl,
-          apiPath: _placesUrl,
-          httpClient: httpClient,
-          apiHeaders: apiHeaders,
-        );
+         apiKey: apiKey,
+         baseUrl: baseUrl,
+         apiPath: _placesUrl,
+         httpClient: httpClient,
+         apiHeaders: apiHeaders,
+       );
 
   Future<PlacesDetailsResponse> getDetailsByPlaceId(
     String placeId, {
@@ -116,12 +116,7 @@ class GoogleMapsPlaces extends GoogleWebService {
       params['sessiontoken'] = sessionToken;
     }
 
-    return url
-        .replace(
-          path: '${url.path}$_detailsSearchUrl',
-          queryParameters: params,
-        )
-        .toString();
+    return url.replace(path: '${url.path}$_detailsSearchUrl', queryParameters: params).toString();
   }
 
   String buildAutocompleteUrl({
@@ -137,9 +132,7 @@ class GoogleMapsPlaces extends GoogleWebService {
     bool strictbounds = false,
     String? region,
   }) {
-    final params = <String, String>{
-      'input': input,
-    };
+    final params = <String, String>{'input': input};
 
     if (language != null) {
       params['language'] = language;
@@ -185,17 +178,14 @@ class GoogleMapsPlaces extends GoogleWebService {
       params['sessiontoken'] = sessionToken;
     }
 
-    return url
-        .replace(
-          path: '${url.path}$_autocompleteUrl',
-          queryParameters: params,
-        )
-        .toString();
+    return url.replace(path: '${url.path}$_autocompleteUrl', queryParameters: params).toString();
   }
 
-  PlacesDetailsResponse _decodeDetailsResponse(Response res) => PlacesDetailsResponse.fromJson(json.decode(res.body));
+  PlacesDetailsResponse _decodeDetailsResponse(Response res) =>
+      PlacesDetailsResponse.fromJson(json.decode(res.body));
 
-  PlacesAutocompleteResponse _decodeAutocompleteResponse(Response res) => PlacesAutocompleteResponse.fromJson(json.decode(res.body));
+  PlacesAutocompleteResponse _decodeAutocompleteResponse(Response res) =>
+      PlacesAutocompleteResponse.fromJson(json.decode(res.body));
 }
 
 @JsonSerializable()
@@ -259,7 +249,8 @@ class PlacesSearchResult {
     this.vicinity,
   });
 
-  factory PlacesSearchResult.fromJson(Map<String, dynamic> json) => _$PlacesSearchResultFromJson(json);
+  factory PlacesSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$PlacesSearchResultFromJson(json);
   Map<String, dynamic> toJson() => _$PlacesSearchResultToJson(this);
 }
 
@@ -368,7 +359,8 @@ class OpeningHoursDetail {
     this.weekdayText = const <String>[],
   });
 
-  factory OpeningHoursDetail.fromJson(Map<String, dynamic> json) => _$OpeningHoursDetailFromJson(json);
+  factory OpeningHoursDetail.fromJson(Map<String, dynamic> json) =>
+      _$OpeningHoursDetailFromJson(json);
   Map<String, dynamic> toJson() => _$OpeningHoursDetailToJson(this);
 }
 
@@ -385,7 +377,8 @@ class OpeningHoursPeriodDate {
 
   OpeningHoursPeriodDate({required this.day, required this.time});
 
-  factory OpeningHoursPeriodDate.fromJson(Map<String, dynamic> json) => _$OpeningHoursPeriodDateFromJson(json);
+  factory OpeningHoursPeriodDate.fromJson(Map<String, dynamic> json) =>
+      _$OpeningHoursPeriodDateFromJson(json);
   Map<String, dynamic> toJson() => _$OpeningHoursPeriodDateToJson(this);
 }
 
@@ -396,7 +389,8 @@ class OpeningHoursPeriod {
 
   OpeningHoursPeriod({this.open, this.close});
 
-  factory OpeningHoursPeriod.fromJson(Map<String, dynamic> json) => _$OpeningHoursPeriodFromJson(json);
+  factory OpeningHoursPeriod.fromJson(Map<String, dynamic> json) =>
+      _$OpeningHoursPeriodFromJson(json);
   Map<String, dynamic> toJson() => _$OpeningHoursPeriodToJson(this);
 }
 
@@ -465,12 +459,10 @@ class PlacesDetailsResponse extends GoogleResponseStatus {
     String? errorMessage,
     required this.result,
     required this.htmlAttributions,
-  }) : super(
-          status: status,
-          errorMessage: errorMessage,
-        );
+  }) : super(status: status, errorMessage: errorMessage);
 
-  factory PlacesDetailsResponse.fromJson(Map<String, dynamic> json) => _$PlacesDetailsResponseFromJson(json);
+  factory PlacesDetailsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PlacesDetailsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PlacesDetailsResponseToJson(this);
 }
 
@@ -520,12 +512,10 @@ class PlacesAutocompleteResponse extends GoogleResponseStatus {
     required String status,
     String? errorMessage,
     required this.predictions,
-  }) : super(
-          status: status,
-          errorMessage: errorMessage,
-        );
+  }) : super(status: status, errorMessage: errorMessage);
 
-  factory PlacesAutocompleteResponse.fromJson(Map<String, dynamic> json) => _$PlacesAutocompleteResponseFromJson(json);
+  factory PlacesAutocompleteResponse.fromJson(Map<String, dynamic> json) =>
+      _$PlacesAutocompleteResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PlacesAutocompleteResponseToJson(this);
 }
 
@@ -573,16 +563,18 @@ class Term {
   final num offset;
   final String value;
 
-  Term({
-    required this.offset,
-    required this.value,
-  });
+  Term({required this.offset, required this.value});
 
   factory Term.fromJson(Map<String, dynamic> json) => _$TermFromJson(json);
   Map<String, dynamic> toJson() => _$TermToJson(this);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Term && runtimeType == other.runtimeType && offset == other.offset && value == other.value;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Term &&
+          runtimeType == other.runtimeType &&
+          offset == other.offset &&
+          value == other.value;
 
   @override
   int get hashCode => offset.hashCode ^ value.hashCode;
@@ -593,16 +585,18 @@ class MatchedSubstring {
   final num offset;
   final num length;
 
-  MatchedSubstring({
-    required this.offset,
-    required this.length,
-  });
+  MatchedSubstring({required this.offset, required this.length});
 
   factory MatchedSubstring.fromJson(Map<String, dynamic> json) => _$MatchedSubstringFromJson(json);
   Map<String, dynamic> toJson() => _$MatchedSubstringToJson(this);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is MatchedSubstring && runtimeType == other.runtimeType && offset == other.offset && length == other.length;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MatchedSubstring &&
+          runtimeType == other.runtimeType &&
+          offset == other.offset &&
+          length == other.length;
 
   @override
   int get hashCode => offset.hashCode ^ length.hashCode;
@@ -622,6 +616,7 @@ class StructuredFormatting {
     this.secondaryText,
   });
 
-  factory StructuredFormatting.fromJson(Map<String, dynamic> json) => _$StructuredFormattingFromJson(json);
+  factory StructuredFormatting.fromJson(Map<String, dynamic> json) =>
+      _$StructuredFormattingFromJson(json);
   Map<String, dynamic> toJson() => _$StructuredFormattingToJson(this);
 }
